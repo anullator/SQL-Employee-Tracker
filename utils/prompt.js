@@ -1,5 +1,5 @@
 // TODO: NOTE: I may want to break the questions up into each category: department, role, and employee
-function promptUser() {
+function selectAction() {
     const questions = [
 
         // SELECT ACTION
@@ -107,4 +107,4 @@ function promptUser() {
     return questions;
 }
 
-module.exports = promptUser;
+module.exports = selectAction;
