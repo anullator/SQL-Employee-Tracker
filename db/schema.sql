@@ -1,4 +1,3 @@
--- CREATE DATABASE AND TABLES HERE --
 DROP DATABASE IF EXISTS employee_db;
 CREATE DATABASE employee_db;
 
@@ -6,7 +5,7 @@ CREATE DATABASE employee_db;
 
 CREATE TABLE department (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(30) UNIQUE NOT NULL -- hold department name
+    department_name VARCHAR(30) UNIQUE NOT NULL -- hold department name
 );
 
 CREATE TABLE role (
