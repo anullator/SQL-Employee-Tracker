@@ -1,5 +1,5 @@
 // TODO: NOTE: I may want to break the questions up into each category: department, role, and employee
-function selectAction() {
+function promptUser() {
     const questions = [
 
         // SELECT ACTION
@@ -8,10 +8,8 @@ function selectAction() {
             name: 'action',
             message: 'What would you like to do?',
             default: 'View All Employees',
-            choices: ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department']
+            choices: ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department', 'Quit']
         },
-
-        // ADD DEPARTMENT
         {   // department name
             type: 'input',
             name: 'department',
@@ -22,8 +20,7 @@ function selectAction() {
             when: (answers) => {
                 return answers.action === 'Add Department';
             }
-        }, 
-        
+        },
         // ADD ROLE
         {   // role name
             type: 'input',
@@ -51,13 +48,19 @@ function selectAction() {
             type: 'list',
             name: 'roleDepartment',
             message: 'What department does the role belong to?',
-            choices: getDepartments(), // TODO: this function should return an array of the existing departments
+            choices:  ['Marketing',
+            'Finance',
+            'Evaluation',
+            'Legal',
+            'Engineering',
+            'Sales',
+            'Human Resources'],
+            // getDepartments(), // TODO: this function should return an array of the existing departments
             when: (answers) => {
                 return answers.action === 'Add Role';
             }
-        },
-
         // ADD EMPLOYEE
+        },
         {   // fname
             type: 'input',
             name: 'fName',
@@ -84,7 +87,8 @@ function selectAction() {
             type: 'list',
             name: 'role',
             message: 'What is the employee\'s role?',
-            choices: getRoles(), // TODO: this function should return an array of the existing roles
+            choices: ['Social Media Manager', 'Accountant', 'Data Analyst', 'Lawyer', 'Senior Engineer', 'Junior Engineer', 'Salesperson', 'Payroll Manager'],
+            // getRoles(), // TODO: this function should return an array of the existing roles
             when: (answers) => {
                 return answers.action === 'Add Employee';
             }
@@ -93,18 +97,19 @@ function selectAction() {
             type: 'list',
             name: 'manager',
             message: 'Who is the employee\'s manager?',
-            choices: function () {
-                const managers = getManagers(); // TODO: this function should return an array of the existing roles
-                managers.unshift('None');
-                return managers;
-            },
+            choices: ['placeholder manager'
+            ],
+            //     function () {
+            //     const managers = getManagers(); // TODO: this function should return an array of the existing roles
+            //     managers.unshift('None');
+            //     return managers;
+            // },
             when: (answers) => {
                 return answers.action === 'Add Employee';
             }
         }
     ]
-
     return questions;
 }
 
-module.exports = selectAction;
+module.exports = { promptUser };
