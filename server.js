@@ -1,14 +1,6 @@
-const express = require('express');
 const { Pool } = require('pg');
 const inquirer = require('inquirer');
 const { promptUser } = require('./utils/prompt.js');
-
-const PORT = process.env.PORT || 3003;
-const app = express();
-
-// middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 // database connection
 const pool = new Pool(
@@ -24,14 +16,6 @@ const pool = new Pool(
 )
 
 pool.connect();
-
-app.use((req, res) => {
-    res.status(404).end();
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
 
 async function init() {
     let done = false;
