@@ -1,24 +1,14 @@
-const { Pool } = require('pg');
+// imports
 const inquirer = require('inquirer');
-const { promptUser } = require('./utils/prompt.js');
+const { pool } = require('./connection');
+const { promptUser } = require('./prompt');
+const { SQLQueries } = require('./query');
 
-// database connection
-const pool = new Pool(
-    {
-        // PostgreSQL username
-        user: 'postgres',
-        // PostgreSQL password
-        password: 'bootcamppass3',
-        host: 'localhost',
-        database: 'employee_db',
-    },
-    console.log(`Connected to the employee_db database.`)
-)
+const init = async function() {
+    pool.connect();
 
-pool.connect();
-
-async function init() {
     let done = false;
+    const query = new SQLQueries();
     // TODO: use while loop?
     while (!done) {    
         answers = await inquirer.prompt(promptUser());
@@ -39,6 +29,8 @@ async function init() {
             case 'Add Employee':
                 console.log(`Added employee`);
                 break;
+            case 'View All Departments':
+                console.log(query.getDepartments())
             default:
                 done = true;
                 console.log(`Quit app.`);
@@ -46,5 +38,4 @@ async function init() {
     }
 }
 
-init();
-
+module.exports = { init };
