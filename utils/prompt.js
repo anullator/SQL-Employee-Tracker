@@ -1,5 +1,9 @@
-// TODO: NOTE: I may want to break the questions up into each category: department, role, and employee
+const { SQLQueries } = require('./query');
+
+
 function promptUser() {
+    const choiceQuery = new SQLQueries();
+
     const questions = [
 
         // SELECT ACTION
@@ -10,6 +14,7 @@ function promptUser() {
             default: 'View All Employees',
             choices: ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department', 'Quit']
         },
+        // ADD DEPARTMENT
         {   // department name
             type: 'input',
             name: 'department',
@@ -38,7 +43,7 @@ function promptUser() {
             name: 'roleSalary',
             message: 'What is the salary of the role?',
             validate: function (input) {
-                return !isNaN(input) ? true : console.error('\n\u{26A0} Error: Must provide salary for role.');
+                return !isNaN(input) && input.length > 0 && input > 0 ? true : console.error('\n\u{26A0} Error: Must provide salary for role.');
             },
             when: (answers) => {
                 return answers.action === 'Add Role';
@@ -48,14 +53,10 @@ function promptUser() {
             type: 'list',
             name: 'roleDepartment',
             message: 'What department does the role belong to?',
-            choices:  ['Marketing',
-            'Finance',
-            'Evaluation',
-            'Legal',
-            'Engineering',
-            'Sales',
-            'Human Resources'],
-            // getDepartments(), // TODO: this function should return an array of the existing departments
+            choices: async function (answers) {
+                const dptOptions = await choiceQuery.departmentChoices();
+                return dptOptions;
+            },
             when: (answers) => {
                 return answers.action === 'Add Role';
             }
@@ -87,8 +88,10 @@ function promptUser() {
             type: 'list',
             name: 'role',
             message: 'What is the employee\'s role?',
-            choices: ['Social Media Manager', 'Accountant', 'Data Analyst', 'Lawyer', 'Senior Engineer', 'Junior Engineer', 'Salesperson', 'Payroll Manager'],
-            // getRoles(), // TODO: this function should return an array of the existing roles
+            choices: async function (answers) {
+                const roleOptions = await choiceQuery.roleChoices();
+                return roleOptions;
+            },
             when: (answers) => {
                 return answers.action === 'Add Employee';
             }
@@ -97,15 +100,37 @@ function promptUser() {
             type: 'list',
             name: 'manager',
             message: 'Who is the employee\'s manager?',
-            choices: ['placeholder manager'
-            ],
-            //     function () {
-            //     const managers = getManagers(); // TODO: this function should return an array of the existing roles
-            //     managers.unshift('None');
-            //     return managers;
-            // },
+            choices: async function (answers) {
+                const managerOptions = await choiceQuery.managerChoices();
+                return managerOptions;
+            },
             when: (answers) => {
                 return answers.action === 'Add Employee';
+            }
+        },
+        //UPDATE EMPLOYEE ROLE
+        {   
+            type: 'list',
+            name: 'updatedEmployee',
+            message: 'Which employee would you like to update?',
+            choices: async function (answers) {
+                const employeeOptions = await choiceQuery.employeeChoices();
+                return employeeOptions;
+            },
+            when: (answers) => {
+                return answers.action === 'Update Employee Role';
+            }
+        },
+        {   
+            type: 'list',
+            name: 'updatedRole',
+            message: 'What is the employee\'s new role?',
+            choices: async function (answers) {
+                const roleOptions = await choiceQuery.roleChoices();
+                return roleOptions;
+            },
+            when: (answers) => {
+                return answers.action === 'Update Employee Role';
             }
         }
     ]
