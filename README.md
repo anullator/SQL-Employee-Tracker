@@ -22,7 +22,7 @@ Run the command `npm start` to launch the program. Follow the prompts to interac
 NOTE:
 There is currently no delete functionality
 
-![Demo video for Employee Tracker Program ](https://drive.google.com/file/d/1sHEunz9D0K0hnLVRazKAEqqTbuHqmFPS/view)
+[Demo video for Employee Tracker Program ](https://drive.google.com/file/d/1sHEunz9D0K0hnLVRazKAEqqTbuHqmFPS/view)
 
 ## License
 
